@@ -4,6 +4,7 @@ from loguru import logger
 
 
 PROJ_ROOT = Path(__file__).resolve().parent.parent
+
 DATA_DIR = PROJ_ROOT / "data"
 LOG_DIR = PROJ_ROOT / "logs"
 

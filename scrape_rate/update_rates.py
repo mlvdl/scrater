@@ -7,7 +7,7 @@ from scrape_rate.utils import scrape_api_url, clean_dataframe_rates
 
 
 def fetch_new_data() -> pd.DataFrame:
-    timestamp = arrow.now()
+    timestamp = arrow.now(tz='Europe/Paris')
     scraped_json_data = scrape_api_url(api_url=API_URL)
     new_row = pd.DataFrame.from_dict(scraped_json_data)
     new_row = clean_dataframe_rates(new_row)

@@ -8,9 +8,14 @@ from scrape_rate.config import DATA_DIR
 
 
 def plot_rates() -> None:
+    styles = ['ggplot', 'dark_background']
+    for style in styles:
+        plot_in_style(style)
 
+
+def plot_in_style(style: str) -> None:
     df, labels_df = get_dataframes()
-    plt.style.use('Solarize_Light2') 
+    plt.style.use(style=style) 
     
     fig = plt.figure(figsize=(10, 7))
     ax = plt.subplot(111)
@@ -33,16 +38,13 @@ def plot_rates() -> None:
     plt.xlim(df.index[0] - (df.index[-1] - df.index[0]) / 100, df.index[-1] + (df.index[-1] - df.index[0]) / 10)
     plt.xticks(rotation=45)
 
-    # box = ax.get_position()
-    # ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
-    # ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     ax.legend(loc='best')
 
-    plt.savefig(DATA_DIR / "rates.png")
+    fig_path = DATA_DIR / f"rates_{style}.png"
+    plt.savefig(fig_path)
     plt.close()
-    # plt.show()
 
-    logger.info(f"Rates plotted to {DATA_DIR / 'rates.png'}") 
+    logger.info(f"Rates plotted to {fig_path}") 
 
 
 def get_dataframes() -> Tuple[pd.DataFrame, pd.DataFrame]:
