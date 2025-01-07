@@ -1,0 +1,5 @@
+arrow
+loguru
+matplotlib
+pandas
+requests
