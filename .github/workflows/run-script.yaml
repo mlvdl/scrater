@@ -24,4 +24,4 @@ jobs:
       - name: Run Python script
         run: |
           python main.py
-          cp data/* $GITHUB_WORKSPACE/data/
+          cp data/* ${{ github.event.repository.html_url }}/data
