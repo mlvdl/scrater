@@ -10,7 +10,8 @@ from scrape_rate.config import DATA_DIR
 def plot_rates() -> None:
 
     df, labels_df = get_dataframes()
-
+    plt.style.use('Solarize_Light2') 
+    
     fig = plt.figure(figsize=(10, 7))
     ax = plt.subplot(111)
     for column in df.columns:
@@ -25,17 +26,17 @@ def plot_rates() -> None:
     ax.xaxis.set_major_locator(mdates.DayLocator())  # Set major ticks to one per day
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
 
-    plt.title('Interest Rate over Time', fontsize=16)
-    plt.xlabel('Timestamp', fontsize=14)
+    plt.title('Interest rate over time', fontsize=16)
     plt.ylabel('Rate', fontsize=14)
     plt.legend(title='Rates', fontsize=12)
 
-    plt.xlim(df.index[0], df.index[-1])
+    plt.xlim(df.index[0] - (df.index[-1] - df.index[0]) / 100, df.index[-1] + (df.index[-1] - df.index[0]) / 10)
     plt.xticks(rotation=45)
 
-    box = ax.get_position()
-    ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
-    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    # box = ax.get_position()
+    # ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
+    # ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    ax.legend(loc='best')
 
     plt.savefig(DATA_DIR / "rates.png")
     plt.close()
