@@ -39,7 +39,6 @@ def plot_in_style(style: str) -> None:
             tickformat='%Y-%m-%d',
             showgrid=True,
             zeroline=False,
-            rotate=45,
         ),
         legend_title='Rates',
         template=style
