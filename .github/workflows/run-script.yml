@@ -1,4 +1,4 @@
-name: Run Python Script Every 15 Minutes
+name: Update rates
 
 on:
   schedule:
