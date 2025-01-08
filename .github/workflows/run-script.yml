@@ -35,6 +35,6 @@ jobs:
 
           git commit -m "Update data with new values"
 
-          git push origin main
+          git push origin ${GITHUB_REF#refs/heads/}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
