@@ -3,3 +3,5 @@ loguru
 matplotlib
 pandas
 requests
+plotly
+kaleido
