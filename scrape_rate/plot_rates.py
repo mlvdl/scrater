@@ -53,7 +53,7 @@ def plot_in_style(range, style: str) -> None:
     fig.update_traces(marker=dict(size=1), hoverlabel=dict(bgcolor="white", font_size=13, font_family="Rockwell"))
 
     fig_path = DATA_DIR / f"rates_{range[0]}_{style}"
-    fig.write_html(fig_path)
+    fig.write_html(fig_path.with_suffix('.html'))
     fig.write_image(fig_path.with_suffix('.png'))
     # fig.show()
 
