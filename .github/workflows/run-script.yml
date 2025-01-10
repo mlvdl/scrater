@@ -1,8 +1,8 @@
-name: Run Python Script Every 15 Minutes
+name: Update rates
 
 on:
   schedule:
-    - cron: "*/15 * * * *" 
+    - cron: '*/15 8-17 * * *' 
   workflow_dispatch:
 
 jobs:
@@ -35,6 +35,6 @@ jobs:
 
           git commit -m "Update data with new values"
 
-          git push origin main
+          git push origin ${GITHUB_REF#refs/heads/}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

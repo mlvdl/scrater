@@ -1,4 +1,4 @@
-Scrapes interest rates from an API url
+Scrapes interest rates
 
 <img src="./data/rates_day_plotly_dark.png" alt="Rate over time" width="500" />
 
