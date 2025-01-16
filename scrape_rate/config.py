@@ -14,3 +14,4 @@ logger.info(f"PROJ_ROOT path is: {PROJ_ROOT}")
 API_URL = "https://ebolig.nordea.dk/wemapp/api/credit/fixedrate/bonds.json"
 
 T0 = 1735947549.160262
+TIME0 = "2025-01-05T11:15:38.662002+01:00"
