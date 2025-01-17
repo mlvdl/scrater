@@ -15,10 +15,11 @@ def plot_rates() -> None:
     styles = ['plotly', 'plotly_dark']
     
     now = pd.Timestamp.now()
-    ranges = {'day': [now - pd.Timedelta(days=1) + pd.Timedelta(hours=9), now], 
-              'week': [now - pd.Timedelta(weeks=1), now],
-              'month': [now - pd.Timedelta(weeks=4), now],
-              '': [pd.Timestamp(TIME0), now],}
+    now_dt = now + pd.Timedelta(hours=1)
+    ranges = {'day': [now - pd.Timedelta(days=1) + pd.Timedelta(hours=9), now_dt], 
+              'week': [now - pd.Timedelta(weeks=1), now_dt],
+              'month': [now - pd.Timedelta(weeks=4), now_dt],
+              '': [pd.Timestamp(TIME0), now_dt],}
     for style in styles:
         for period, range in ranges.items():
             plot_in_style((period, range), style)
