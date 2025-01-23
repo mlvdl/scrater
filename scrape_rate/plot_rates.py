@@ -5,7 +5,7 @@ import matplotlib.dates as mdates
 import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
-
+from datetime import date
 from loguru import logger
 
 from scrape_rate.config import DATA_DIR, TIME0
@@ -16,7 +16,10 @@ def plot_rates() -> None:
     
     now = pd.Timestamp.now()
     now_dt = now + pd.Timedelta(hours=1)
-    ranges = {'day': [now - pd.Timedelta(days=1) + pd.Timedelta(hours=9), now_dt], 
+    
+    today_date = date.today()
+    today_8am = pd.Timestamp(today_date.year, today_date.month, today_date.day, 8, 0, 0)
+    ranges = {'day': [today_8am, now_dt], 
               'week': [now - pd.Timedelta(weeks=1), now_dt],
               'month': [now - pd.Timedelta(weeks=4), now_dt],
               '': [pd.Timestamp(TIME0), now_dt],}
