@@ -44,13 +44,13 @@ def plot_in_style(range, style: str) -> None:
             if range[0] == 'day':
                 today = pd.Timestamp('today').normalize()
                 today_rows = df[df.index.date == today.date()]
-                first_row_today = today_rows.iloc[0] if not today_rows.empty else None
+                first_row_today = today_rows.iloc[2] if not today_rows.empty else None
                 fig.add_annotation(x=pd.Timestamp(first_row_today.name), y=first_row_today[column], text=first_row_today[column])
     
     if range[0] == 'day':
         tickformat = '%H:%M' 
     elif range[0] == 'week':  
-        tickformat = '%M-%d'
+        tickformat = '%m-%d'
     else:
         tickformat = '%Y-%m-%d' 
     fig.update_layout(
