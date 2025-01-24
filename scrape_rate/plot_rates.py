@@ -46,13 +46,19 @@ def plot_in_style(range, style: str) -> None:
                 today_rows = df[df.index.date == today.date()]
                 first_row_today = today_rows.iloc[0] if not today_rows.empty else None
                 fig.add_annotation(x=pd.Timestamp(first_row_today.name), y=first_row_today[column], text=first_row_today[column])
-
+    
+    if range[0] == 'day':
+        tickformat = '%H:%M' 
+    elif range[0] == 'week':  
+        tickformat = '%M-%d'
+    else:
+        tickformat = '%Y-%m-%d' 
     fig.update_layout(
         title='Interest rate over the past ' + range[0],
         xaxis_title='Date',
         yaxis_title='Rate',
         xaxis=dict(
-            tickformat='%Y-%m-%d' if range[0] != 'day' else '%H:%M',
+            tickformat=tickformat,
             showgrid=True,
             zeroline=False,
         ),
