@@ -87,7 +87,6 @@ def get_dataframes() -> Tuple[pd.DataFrame, pd.DataFrame]:
     labels_df = labels_df[labels_df['repaymentFreedomMax'] == 'Nej']
     labels_df['fundName'] = labels_df['fundName'].apply(clean_fund_name)
 
-    # Merge A and AA: Use AA if available, otherwise keep A
     df["3,50% NORDEA KREDIT SDRO ANN SDRO 2056"] = df["3,50% NORDEA KREDIT SDRO ANN SDRO 2056"].fillna(df["3,5 NDA 2056"])
     df = df.drop(columns=["3,5 NDA 2056"])
 
