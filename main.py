@@ -1,4 +1,4 @@
-from scrape_rate.plot_rates import plot_rates
+from scrape_rate.plot_interactive_rates import plot_rates
 from scrape_rate.update_rates import update_rates
 
 
