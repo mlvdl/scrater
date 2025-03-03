@@ -1,35 +1,28 @@
-from typing import Tuple
 import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import plotly.graph_objects as go
 import pandas as pd
-import plotly.express as px
-from datetime import date
+
 from loguru import logger
 
 from scrape_rate.config import DATA_DIR, TIME0
+from scrape_rate.utils import get_dataframes, get_labels
 
 
 def plot_rates() -> None:
     styles = ['plotly', 'plotly_dark']
     
     now = pd.Timestamp.now()
-    now_dt = now + pd.Timedelta(hours=1)
-    
-    today_date = date.today()
-    today_8am = pd.Timestamp(today_date.year, today_date.month, today_date.day, 8, 0, 0)
-    ranges = {'day': [today_8am, now_dt], 
-              'week': [now - pd.Timedelta(weeks=1), now_dt],
-              'month': [now - pd.Timedelta(weeks=4), now_dt],
-              '': [pd.Timestamp(TIME0), now_dt],}
+    ranges = {'day': [now - pd.Timedelta(days=1) + pd.Timedelta(hours=9), now], 
+              'week': [now - pd.Timedelta(weeks=1), now],
+              'month': [now - pd.Timedelta(weeks=4), now],
+              '': [pd.Timestamp(TIME0), now],}
     for style in styles:
         for period, range in ranges.items():
             plot_in_style((period, range), style)
 
 
 def plot_in_style(range, style: str) -> None:
-    df, labels_df = get_dataframes()
+    df, labels_df = get_dataframes(data_dir=DATA_DIR), get_labels(DATA_DIR, loan_period=30, repayment_freedom='Nej')
     
     fig = go.Figure()
     for column in df.columns:
@@ -46,19 +39,13 @@ def plot_in_style(range, style: str) -> None:
                 today_rows = df[df.index.date == today.date()]
                 first_row_today = today_rows.iloc[0] if not today_rows.empty else None
                 fig.add_annotation(x=pd.Timestamp(first_row_today.name), y=first_row_today[column], text=first_row_today[column])
-    
-    if range[0] == 'day':
-        tickformat = '%H:%M' 
-    elif range[0] == 'week':  
-        tickformat = '%m-%d'
-    else:
-        tickformat = '%Y-%m-%d' 
+
     fig.update_layout(
         title='Interest rate over the past ' + range[0],
         xaxis_title='Date',
         yaxis_title='Rate',
         xaxis=dict(
-            tickformat=tickformat,
+            tickformat='%Y-%m-%d' if range[0] != 'day' else '%H:%M',
             showgrid=True,
             zeroline=False,
         ),
@@ -75,25 +62,3 @@ def plot_in_style(range, style: str) -> None:
     # fig.show()
 
     logger.info(f"Rates plotted to {fig_path}") 
-
-
-def get_dataframes() -> Tuple[pd.DataFrame, pd.DataFrame]:
-    df = pd.read_csv(DATA_DIR / 'updated_rates.csv')
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df.set_index('timestamp', inplace=True)
-
-    labels_df = pd.read_csv(DATA_DIR / "labels.csv")
-    labels_df = labels_df[labels_df['loanPeriodMax'] == 30]
-    labels_df = labels_df[labels_df['repaymentFreedomMax'] == 'Nej']
-    labels_df['fundName'] = labels_df['fundName'].apply(clean_fund_name)
-
-    df["3,50% NORDEA KREDIT SDRO ANN SDRO 2056"] = df["3,50% NORDEA KREDIT SDRO ANN SDRO 2056"].fillna(df["3,5 NDA 2056"])
-    df = df.drop(columns=["3,5 NDA 2056"])
-
-    return df, labels_df  
-
-
-def clean_fund_name(name: str) -> str:
-    if isinstance(name, str):
-        return name.replace('<sup> 2)</sup>', '').strip()
-    return name
