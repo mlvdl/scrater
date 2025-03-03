@@ -1,8 +1,5 @@
-Scrapes interest rates
+# Scrapes interest rates
 
-<img src="./data/plots/rates_day_plotly_dark.png" />
+If you are lost, go to:
 
-<img src="./data/plots/rates_week_plotly_dark.png" />
-
-<img src="./data/plots/rates__plotly_dark.png" />
-
+<a href="https://mlvdl.github.io/skills-github-pages/">https://mlvdl.github.io/skills-github-pages</a>
