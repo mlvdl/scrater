@@ -20,11 +20,11 @@ def plot_interactive_figure(df_data: pd.DataFrame, df_labels: pd.DataFrame, styl
     buttons = []
     rates = sorted(df_labels['fundName'].tolist())
     for i, rate in enumerate(rates):
-        color = get_color(value=df_data[rate][-2]-df_data[rate][-1])
+        color = get_color(value=(df_data[rate].iloc[-2]-df_data[rate].iloc[-1]))
         fig.add_trace(
             go.Scatter(
                 x=df_data.index, 
-                name=df_data[rate][-1],
+                name=df_data[rate].iloc[-1],
                 y=df_data[rate],
                 visible=(i==0),
                 line=dict(color=color),

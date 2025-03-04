@@ -3,9 +3,8 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
-from scrape_rate.config import DATA_DIR, PLOT_DIR
+from scrape_rate.config import COLORS, DATA_DIR, PLOT_DIR
 from scrape_rate.plot_rates import get_dataframes, get_labels
-from scrape_rate.utils import get_color
 
 
 def plot_average_rates() -> None:
@@ -24,7 +23,7 @@ def plot_interactive_figure(df_data: pd.DataFrame, df_labels: pd.DataFrame, styl
     buttons = []
     rates = sorted(df_labels['fundName'].tolist())
     for i, rate in enumerate(rates):
-        color = get_color(value=df_data[rate][-2]-df_data[rate][-1])
+        color = COLORS[i]
         daily_pattern = df_data.groupby("time_bin")[rate].agg(["mean", "std"])
         daily_pattern.fillna(0, inplace=True)
         fig.add_trace(
