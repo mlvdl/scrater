@@ -2,7 +2,7 @@ from loguru import logger
 import pandas as pd
 import plotly.graph_objects as go
 
-from scrape_rate.config import DATA_DIR, PLOT_DIR
+from scrape_rate.config import DATA_DIR, PLOT_DIR, COLORS
 from scrape_rate.plot_rates import get_dataframes, get_labels
 
 
@@ -17,22 +17,22 @@ def plot_interactive_figure(df_data: pd.DataFrame, df_labels: pd.DataFrame, styl
     fig = go.Figure()
 
     buttons = []
-    rates = df_labels['fundName'].tolist()
-    
+    rates = sorted(df_labels['fundName'].tolist())
     for i, column in enumerate(rates):
         fig.add_trace(
             go.Scatter(
                 x=df_data.index, 
                 name=column,
                 y=df_data[column],
-                visible=(i==0)
+                visible=(i==0),
+                line=dict(color=COLORS[i]),
                 )
             )
         
         args = [False] * len(df_data.columns)
         args[i] = True
-        button = dict(label = column,
-                      method = "update",
+        button = dict(label=column,
+                      method="update",
                       args=[{"visible": args}])
         buttons.append(button)
 
@@ -41,11 +41,11 @@ def plot_interactive_figure(df_data: pd.DataFrame, df_labels: pd.DataFrame, styl
             dict(
             type="dropdown",
             direction="down",
-            x = 1,
-            y = 1,
-            buttons = buttons)
+            x=1,
+            y=1,
+            buttons=buttons)
         ],
-        barmode = "stack",
+        barmode="stack",
 
         title='Interest Rate over Time',
         xaxis_title='Date',

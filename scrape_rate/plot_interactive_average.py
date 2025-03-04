@@ -24,7 +24,7 @@ def plot_interactive_figure(df_data: pd.DataFrame, df_labels: pd.DataFrame, styl
     buttons = []
     rates = sorted(df_labels['fundName'].tolist())
     for i, rate in enumerate(rates):
-        color = next(COLORS)
+        color = COLORS[i]
         daily_pattern = df_data.groupby("time_bin")[rate].agg(["mean", "std"])
         daily_pattern.fillna(0, inplace=True)
         fig.add_trace(
