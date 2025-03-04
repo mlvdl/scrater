@@ -18,6 +18,3 @@ T0 = 1735947549.160262
 TIME0 = "2025-01-05T11:15:38.662002+01:00"
 
 COLORS = ['blue', 'red', 'green', 'purple', 'orange', 'brown', 'pink', 'gray', 'olive', 'cyan']
-POSITIVE_COLOR = 'green'
-NEGATIVE_COLOR = 'red'
-NEUTRAL_COLOR = 'blue'

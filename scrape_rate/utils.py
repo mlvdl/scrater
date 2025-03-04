@@ -31,14 +31,23 @@ def clean_fund_name(name: str) -> str:
     return name
 
 
+def get_color(value: float) -> str:
+    if value > 0:
+        return 'green'
+    elif value < 0: 
+        return 'red'
+    else:
+        return 'blue'
+    
+
 def get_dataframes(data_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:
     df = pd.read_csv(data_dir / 'updated_rates.csv')
     df['timestamp'] = pd.to_datetime(df['timestamp'])
     df.set_index('timestamp', inplace=True)
 
     df = merge_df_columns(df=df, col2keep="3,50% NORDEA KREDIT SDRO ANN SDRO 2056", col2drop="3,5 NDA 2056")
-
     return df
+
 
 def merge_df_columns(df: pd.DataFrame, col2keep: str, col2drop: str):
     df[col2keep] = df[col2keep].fillna(df[col2drop])

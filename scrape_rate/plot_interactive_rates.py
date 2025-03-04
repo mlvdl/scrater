@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 
 from scrape_rate.config import DATA_DIR, PLOT_DIR, COLORS
 from scrape_rate.plot_rates import get_dataframes, get_labels
+from scrape_rate.utils import get_color
 
 
 def plot_rates() -> None:
@@ -18,20 +19,22 @@ def plot_interactive_figure(df_data: pd.DataFrame, df_labels: pd.DataFrame, styl
 
     buttons = []
     rates = sorted(df_labels['fundName'].tolist())
-    for i, column in enumerate(rates):
+    for i, rate in enumerate(rates):
+        color = get_color(value=df_data[rate][-2]-df_data[rate][-1])
         fig.add_trace(
             go.Scatter(
                 x=df_data.index, 
-                name=column,
-                y=df_data[column],
+                name=df_data[rate][-1],
+                y=df_data[rate],
                 visible=(i==0),
-                line=dict(color=COLORS[i]),
+                line=dict(color=color),
+                showlegend=True
                 )
             )
         
         args = [False] * len(df_data.columns)
         args[i] = True
-        button = dict(label=column,
+        button = dict(label=rate,
                       method="update",
                       args=[{"visible": args}])
         buttons.append(button)
