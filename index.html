@@ -3,10 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interest Rates</title>
+    <title>Interactive Plots</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #plot-container {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Interest Rates</h1>
-    <iframe src="data/plots/interactive_rates.html" style="position:absolute; top:0; left:0; width:100vw; height:100vh; border:none;"></iframe>
+    <h1>Interactive Plots</h1>
+    <button onclick="loadPlot('data/plots/interactive_rates.html')">Show Plot A</button>
+    <button onclick="loadPlot('data/plots/interactive_average_rates.html')">Show Plot B</button>
+    
+    <div id="plot-container">
+        <iframe id="plot-frame" width="800" height="600" style="border:none;"></iframe>
+    </div>
+
+    <script>
+        function loadPlot(plotFile) {
+            document.getElementById('plot-frame').src = plotFile;
+        }
+    </script>
 </body>
 </html>
