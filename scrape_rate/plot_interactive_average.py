@@ -22,7 +22,7 @@ def plot_interactive_figure(df_data: pd.DataFrame, df_labels: pd.DataFrame, styl
 
     fig = go.Figure()
     buttons = []
-    rates = df_labels['fundName'].tolist()
+    rates = sorted(df_labels['fundName'].tolist())
     for i, rate in enumerate(rates):
         color = next(COLORS)
         daily_pattern = df_data.groupby("time_bin")[rate].agg(["mean", "std"])
