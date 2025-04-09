@@ -23,7 +23,7 @@ def clean_fund_name(name: str) -> str:
 
 
 def get_color(value: float) -> str:
-    logger.info(f"Value: {value}")
+    logger.debug(f"Value: {value}")
     if value > 0:
         return 'green'
     elif value < 0: 
@@ -34,7 +34,7 @@ def get_color(value: float) -> str:
 
 def get_dataframes(data_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:
     df = pd.read_csv(data_dir / 'updated_rates.csv')
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
     df.set_index('timestamp', inplace=True)
 
     df = merge_df_columns(df=df, col2keep="3,50% NORDEA KREDIT SDRO ANN SDRO 2056", col2drop="3,5 NDA 2056")

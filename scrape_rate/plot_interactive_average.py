@@ -15,6 +15,7 @@ def plot_average_rates() -> None:
 
 def plot_interactive_figure(df_data: pd.DataFrame, df_labels: pd.DataFrame, style: str) -> None:
 
+    df_data.index = pd.to_datetime(df_data.index, utc=True)
     df_data["time_seconds"] = df_data.index.hour * 3600 + df_data.index.minute * 60
     bin_size = 1800
     df_data["time_bin"] = (df_data["time_seconds"] // bin_size) * bin_size
