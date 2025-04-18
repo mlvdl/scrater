@@ -2,24 +2,33 @@ from loguru import logger
 import pandas as pd
 import plotly.graph_objects as go
 
-from scrape_rate.config import DATA_DIR, PLOT_DIR, COLORS
+from scrape_rate.config import DATA_DIR, PLOT_DIR
+from scrape_rate.plot_interactive_average import plot_average
 from scrape_rate.plot_rates import get_dataframes, get_labels
 from scrape_rate.utils import get_color
 
 
-def plot_rates() -> None:
+def plot_rates(average: bool) -> None:
     df = get_dataframes(data_dir=DATA_DIR)
-    labels_df = get_labels(DATA_DIR, loan_period=30, repayment_freedom='Nej')
-    plot_interactive_figure(df_data=df, df_labels=labels_df, style='plotly')
+    labels_df = get_labels(DATA_DIR, loan_period=[20, 30], repayment_freedom='Nej')
+    drop_colums = [column for column in df.columns if column not in labels_df['fundName'].tolist()]
+    df.drop(columns=drop_colums, inplace=True)
+
+    rename_dict = dict(zip(labels_df['fundName'], labels_df['name']))
+    df.rename(columns=rename_dict, inplace=True)
+
+    plot_interactive_figure(df_data=df, style='plotly')
+    if average:
+        plot_average(df_data=df, style='plotly')
 
 
-def plot_interactive_figure(df_data: pd.DataFrame, df_labels: pd.DataFrame, style: str) -> None:
+def plot_interactive_figure(df_data: pd.DataFrame, style: str) -> None:
     
     fig = go.Figure()
 
     buttons = []
-    rates = sorted(df_labels['fundName'].tolist())
-    for i, rate in enumerate(rates):
+
+    for i, rate in enumerate(df_data.columns.tolist()):
         color = get_color(value=(df_data[rate].iloc[-1]-df_data[rate].iloc[-2]))
         fig.add_trace(
             go.Scatter(

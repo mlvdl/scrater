@@ -1,8 +1,10 @@
 from pathlib import Path
-from typing import Tuple
+from typing import List, Optional, Tuple
 from loguru import logger
 import pandas as pd
 import requests
+
+from scrape_rate.config import DATA_DIR
 
 
 def clean_dataframe_rates(df: pd.DataFrame) -> pd.DataFrame:
@@ -36,15 +38,16 @@ def get_dataframes(data_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:
     df = pd.read_csv(data_dir / 'updated_rates.csv')
     df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
     df.set_index('timestamp', inplace=True)
-
     df = merge_df_columns(df=df, col2keep="3,50% NORDEA KREDIT SDRO ANN SDRO 2056", col2drop="3,5 NDA 2056")
     return df
 
 
-def get_labels(data_dir: Path, loan_period: int = 30, repayment_freedom: str = 'Nej') -> pd.DataFrame:
+def get_labels(data_dir: Path, loan_period: Optional[List[int]] = None, repayment_freedom: Optional[str] = None) -> pd.DataFrame:
     labels_df = pd.read_csv(data_dir / 'labels.csv')
-    labels_df = labels_df[labels_df['loanPeriodMax'] == loan_period]
-    labels_df = labels_df[labels_df['repaymentFreedomMax'] == repayment_freedom]
+    
+    if loan_period is not None: labels_df = labels_df[labels_df['loanPeriodMax'].isin(loan_period)]
+    if repayment_freedom is not None: labels_df = labels_df[labels_df['repaymentFreedomMax'] == repayment_freedom]
+
     labels_df['fundName'] = labels_df['fundName'].apply(clean_fund_name)
     return labels_df 
 
@@ -62,3 +65,13 @@ def scrape_api_url(api_url: str) -> dict:
     else:
         logger.error(f"Failed to retrieve data. Status code: {response.status_code}")
         raise Exception(f"Failed to retrieve data. Status code: {response.status_code}")
+
+
+def translate_labels():
+    labels = pd.read_csv(DATA_DIR / 'labels.csv')
+    names = []
+    for row in labels.iterrows():
+        name = f"{row[1]['fundName'].split()[0]} - {row[1]['loanPeriodMax']} år"
+        names.append(name)
+    labels['name'] = names
+    labels.to_csv(DATA_DIR / 'labels_translated.csv', index=False)
