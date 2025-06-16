@@ -1,3 +1,4 @@
+from datetime import datetime
 from loguru import logger
 import pandas as pd
 import plotly.graph_objects as go
@@ -29,7 +30,16 @@ def plot_interactive_figure(df_data: pd.DataFrame, style: str) -> None:
     buttons = []
 
     for i, rate in enumerate(df_data.columns.tolist()):
-        color = get_color(value=(df_data[rate].iloc[-1]-df_data[rate].iloc[-2]))
+        latest_timestamp = df_data.index[-1]
+        dt_object = datetime.fromisoformat(str(latest_timestamp))
+        latest_date = dt_object.date()
+        latest_date = latest_date.isoformat()
+
+        df_data.index = pd.to_datetime(df_data.index)
+        first_timestamp = df_data.loc[latest_date].iloc[0]
+        first_value = first_timestamp[rate]
+        color = get_color(value=(df_data[rate].iloc[-1] - first_value))
+
         fig.add_trace(
             go.Scatter(
                 x=df_data.index, 
