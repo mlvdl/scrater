@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
-from scrape_rate.config import COLORS, PLOT_DIR
+from scrater.config import COLORS, PLOT_DIR
 
 
 def plot_average(df_data: pd.DataFrame, style: str) -> None:

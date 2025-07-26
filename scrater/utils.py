@@ -4,7 +4,7 @@ from loguru import logger
 import pandas as pd
 import requests
 
-from scrape_rate.config import DATA_DIR
+from scrater.config import DATA_DIR
 
 
 def clean_dataframe_rates(df: pd.DataFrame) -> pd.DataFrame:

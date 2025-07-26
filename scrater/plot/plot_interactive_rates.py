@@ -3,9 +3,9 @@ from loguru import logger
 import pandas as pd
 import plotly.graph_objects as go
 
-from scrape_rate.config import DATA_DIR, PLOT_DIR
-from scrape_rate.plot_interactive_average import plot_average
-from scrape_rate.utils import get_dataframe, get_labels, get_color
+from scrater.config import DATA_DIR, PLOT_DIR
+from plot.plot_interactive_average import plot_average
+from scrater.utils import get_dataframe, get_labels, get_color
 
 
 def plot_rates(average: bool) -> None:

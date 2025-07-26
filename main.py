@@ -1,5 +1,5 @@
-from scrape_rate.plot_interactive_rates import plot_rates
-from scrape_rate.update_rates import update_rates
+from plot.plot_interactive_rates import plot_rates
+from scrater.update_rates import update_rates
 
 
 def main(average: bool = True) -> None:

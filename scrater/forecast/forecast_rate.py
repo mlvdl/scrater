@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from loguru import logger
 from prophet import Prophet
 
-from scrape_rate.utils import get_dataframe, get_labels
-from scrape_rate.config import DATA_DIR, PLOT_DIR
+from scrater.utils import get_dataframe, get_labels
+from scrater.config import DATA_DIR, PLOT_DIR
 
 
 @dataclasses.dataclass
