@@ -2,8 +2,8 @@ import arrow
 import pandas as pd
 from loguru import logger
 
-from scrape_rate.config import API_URL, DATA_DIR
-from scrape_rate.utils import scrape_api_url, clean_dataframe_rates
+from scrater.config import API_URL, DATA_DIR
+from scrater.utils import scrape_api_url, clean_dataframe_rates
 
 
 def fetch_new_data() -> pd.DataFrame:

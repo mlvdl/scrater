@@ -2,7 +2,7 @@ import arrow
 import pandas as pd
 from loguru import logger
 
-from scrape_rate.config import DATA_DIR, T0
+from scrater.config import DATA_DIR, T0
 from utils import clean_dataframe_rates
 
 

@@ -4,7 +4,7 @@ from loguru import logger
 import pandas as pd
 import requests
 
-from scrape_rate.config import DATA_DIR
+from scrater.config import DATA_DIR
 
 
 def clean_dataframe_rates(df: pd.DataFrame) -> pd.DataFrame:
@@ -34,7 +34,7 @@ def get_color(value: float) -> str:
         return 'blue'
     
 
-def get_dataframes(data_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_dataframe(data_dir: Path) -> pd.DataFrame:
     df = pd.read_csv(data_dir / 'updated_rates.csv')
     df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
     df.set_index('timestamp', inplace=True)
