@@ -14,7 +14,7 @@ from scrape_rate.config import DATA_DIR, PLOT_DIR
 class ForecastConfig:
     data_dir: Path = DATA_DIR
     plot_dir: Path = PLOT_DIR
-    periods: int = 10
+    periods: int = 10_000
     freq: str = "5min"
     rate: str = "3,50"
 
