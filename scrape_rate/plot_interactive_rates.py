@@ -5,12 +5,11 @@ import plotly.graph_objects as go
 
 from scrape_rate.config import DATA_DIR, PLOT_DIR
 from scrape_rate.plot_interactive_average import plot_average
-from scrape_rate.plot_rates import get_dataframes, get_labels
-from scrape_rate.utils import get_color
+from scrape_rate.utils import get_dataframe, get_labels, get_color
 
 
 def plot_rates(average: bool) -> None:
-    df = get_dataframes(data_dir=DATA_DIR)
+    df = get_dataframe(data_dir=DATA_DIR)
     labels_df = get_labels(DATA_DIR, loan_period=[20, 30], repayment_freedom='Nej')
     drop_colums = [column for column in df.columns if column not in labels_df['fundName'].tolist()]
     df.drop(columns=drop_colums, inplace=True)
