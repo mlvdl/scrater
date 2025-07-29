@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 from scrater.config import DATA_DIR, PLOT_DIR
-from plot.plot_interactive_average import plot_average
+from scrater.plot.plot_interactive_average import plot_average
 from scrater.utils import get_dataframe, get_labels, get_color
 
 
