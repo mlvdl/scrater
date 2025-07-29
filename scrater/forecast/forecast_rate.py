@@ -17,6 +17,7 @@ class ForecastConfig:
     periods: int = 10_000
     freq: str = "5min"
     rate: str = "3,50"
+    show: bool = True
 
 
 def prophet_forecast(config: ForecastConfig):
@@ -41,10 +42,12 @@ def prophet_forecast(config: ForecastConfig):
     future = model.make_future_dataframe(periods=config.periods, freq=config.freq)
     forecast = model.predict(future)
     logger.debug(forecast)
-    print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(config.periods))
-    model.plot(forecast)
-    plt.savefig(config.plot_dir / 'prophet_forcast.png')
-    plt.show()
+    logger.info(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(config.periods))
+    if config.show:
+        model.plot(forecast)
+    plt.savefig(config.plot_dir / 'prophet_forecast.png')
+    if config.show:
+        plt.show()
 
 
 def forecast_rate():
