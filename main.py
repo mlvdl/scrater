@@ -1,4 +1,4 @@
-from plot.plot_interactive_rates import plot_rates
+from scrater.plot.plot_interactive_rates import plot_rates
 from scrater.update_rates import update_rates
 
 
