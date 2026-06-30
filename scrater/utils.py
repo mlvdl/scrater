@@ -39,6 +39,7 @@ def get_dataframe(data_dir: Path) -> pd.DataFrame:
     df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
     df.set_index('timestamp', inplace=True)
     df = merge_df_columns(df=df, col2keep="3,50% NORDEA KREDIT SDRO ANN SDRO 2056", col2drop="3,5 NDA 2056")
+    df = merge_df_columns(df=df, col2keep="3,50% NORDEA KREDIT SDRO ANN SDRO 2056", col2drop="3,50% NORDEA KREDIT SDRO 2056")
     return df
 
 
