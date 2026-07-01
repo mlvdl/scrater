@@ -18,3 +18,6 @@ T0 = 1735947549.160262
 TIME0 = "2025-01-05T11:15:38.662002+01:00"
 
 COLORS = ['green', 'blue', 'red', 'purple', 'orange', 'brown', 'pink', 'gray', 'olive', 'cyan']
+
+THRESHOLD = 97.5
+TARGET_RATE = "3,50"

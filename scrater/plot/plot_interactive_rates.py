@@ -3,7 +3,7 @@ from loguru import logger
 import pandas as pd
 import plotly.graph_objects as go
 
-from scrater.config import DATA_DIR, PLOT_DIR
+from scrater.config import DATA_DIR, PLOT_DIR, THRESHOLD, TARGET_RATE
 from scrater.plot.plot_interactive_average import plot_average
 from scrater.utils import get_dataframe, get_labels, get_color
 
@@ -23,51 +23,65 @@ def plot_rates(average: bool) -> None:
 
 
 def plot_interactive_figure(df_data: pd.DataFrame, style: str) -> None:
-    
+
     fig = go.Figure()
+    rates = df_data.columns.tolist()
 
-    buttons = []
-
-    for i, rate in enumerate(df_data.columns.tolist()):
+    # --- Step 1: add one trace per rate ---
+    for i, rate in enumerate(rates):
         latest_timestamp = df_data.index[-1]
         dt_object = datetime.fromisoformat(str(latest_timestamp))
         latest_date = dt_object.date()
         latest_date = latest_date.isoformat()
-
         df_data.index = pd.to_datetime(df_data.index)
         first_timestamp = df_data.loc[latest_date].iloc[0]
         first_value = first_timestamp[rate]
         color = get_color(value=(df_data[rate].iloc[-1] - first_value))
-
         fig.add_trace(
             go.Scatter(
-                x=df_data.index, 
+                x=df_data.index,
                 name=df_data[rate].iloc[-1],
                 y=df_data[rate],
-                visible=(i==0),
+                visible=(i == 0),
                 line=dict(color=color),
                 showlegend=True
-                )
             )
-        
-        args = [False] * len(df_data.columns)
+        )
+
+    # --- Step 2: add the threshold line as its own trace ---
+    threshold_trace_index = len(rates)  # its position in fig.data
+    fig.add_trace(
+        go.Scatter(
+            x=[df_data.index.min(), df_data.index.max()],
+            y=[THRESHOLD, THRESHOLD],
+            mode="lines",
+            line=dict(color="black", dash="dash"),
+            visible=(TARGET_RATE in rates[0]),
+            showlegend=False
+        )
+    )
+
+    buttons = []
+    n_traces = len(rates) + 1
+    for i, rate in enumerate(rates):
+        args = [False] * n_traces
         args[i] = True
-        button = dict(label=rate,
-                      method="update",
-                      args=[{"visible": args}])
+        if rate == TARGET_RATE:
+            args[threshold_trace_index] = True  # show threshold line too
+        button = dict(label=rate, method="update", args=[{"visible": args}])
         buttons.append(button)
 
     fig.update_layout(
         updatemenus=[
             dict(
-            type="dropdown",
-            direction="down",
-            x=1,
-            y=1,
-            buttons=buttons)
+                type="dropdown",
+                direction="down",
+                x=1,
+                y=1,
+                buttons=buttons
+            )
         ],
         barmode="stack",
-
         title='Interest Rate over Time',
         xaxis_title='Date',
         yaxis_title='Rate',
@@ -81,5 +95,5 @@ def plot_interactive_figure(df_data: pd.DataFrame, style: str) -> None:
     )
     fig_path = PLOT_DIR / "interactive_rates"
     fig.write_html(fig_path.with_suffix('.html'))
-    logger.info(f"Rates plotted to {fig_path}") 
+    logger.info(f"Rates plotted to {fig_path}")
     fig.show()
